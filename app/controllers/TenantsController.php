@@ -35,15 +35,11 @@ class TenantsController extends \BaseController {
   }
 
   public function login($subdomain){
-    //TODO: check if subdomain exists
-    
     return View::make('tenants.login');
   }
 
   public function createSession($subdomain) {
 
-    //set the schema for this subdomain
-    $query = DB::statement('SET search_path TO '.$subdomain);
     $username = Input::get('username');
     $password = Input::get('password');
   
