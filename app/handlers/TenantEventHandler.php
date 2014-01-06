@@ -13,26 +13,25 @@ class TenantEventHandler{
         $password = Hash::make($data['password']);
 
         //create the new schema
-        $query = DB::statement('CREATE SCHEMA '.$username);
+        PGSchema::create($username);
 
         //switch to this schema
-        $query = DB::statement('SET search_path TO '.$username);
+        PGSchema::switchTo($username);
 
         //create a users table for this schema
         Schema::create('users', function($table)
-    {
-        $table->increments('id');
-        $table->string('username');
-        $table->string('password');
-        $table->timestamps();
-    });
+        {
+            $table->increments('id');
+            $table->string('username');
+            $table->string('password');
+            $table->timestamps();
+        });
 
         //create the first user for this schema
         User::create(['username' => 'admin', 'password' => $password]);
 
         //back to the public schema
-
-        $query = DB::statement('SET search_path TO public');
+        PGSchema::switchTo();
 
     }
     public function subscribe($events)

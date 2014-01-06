@@ -26,5 +26,6 @@ Route::filter('tenantFilter', function(){
   $user = Tenant::where('subdomain', '=', $subdomain)->firstOrFail();
 
   //if user exists, change the schema to the tenant schema
-  $query = DB::statement('SET search_path TO '.$subdomain);
+  PGSchema::switchTo($subdomain);
 });
+
